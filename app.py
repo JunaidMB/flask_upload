@@ -2,7 +2,8 @@ import os
 from werkzeug.utils import secure_filename
 from PIL import Image
 from flask import Flask, flash, request, redirect, send_file, render_template, send_from_directory
-
+import io
+from io import StringIO, BytesIO
 
 UPLOAD_FOLDER = 'uploads/'
 
@@ -14,6 +15,10 @@ def process_image(filename):
     rotated_image = original_image.transpose(Image.ROTATE_90)
     return rotated_image
 
+def process_image_file(file):
+    original_image = Image.open(io.BytesIO(file.read()))
+    rotated_image = original_image.transpose(Image.ROTATE_90)
+    return rotated_image
 
 # Define a POST method to upload the file
 @app.route('/uploadfile', methods = ['GET', 'POST'])
@@ -31,7 +36,8 @@ def upload_file():
             return redirect(request.url)
         else:
             filename = secure_filename(file.filename)
-            file = process_image(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            #file = process_image(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            file = process_image_file(file)
             file.seek(0)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
