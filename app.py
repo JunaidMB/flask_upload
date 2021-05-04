@@ -31,14 +31,14 @@ def upload_file():
         file = request.files['file']
         # if user does not select file, browser also
         # submit a empty part without filename
-        if file.filename == '':
+        if not file.filename:
             print('no filename')
             return redirect(request.url)
         else:
             filename = secure_filename(file.filename)
             #file = process_image(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             file = process_image_file(file)
-            file.seek(0)
+            #file.seek(0)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
             print('saved file successfully')
@@ -52,14 +52,24 @@ def upload_file():
 # API for downloading the file
 @app.route('/downloadfile/<filename>', methods = ['GET'])
 def download_file(filename):
-    return render_template('download.html', value = filename)
+    x = 2**2
+    return render_template('download.html', value = filename, name = "Junaid", number = x)
 
 # Download file redirects to return files
 @app.route('/return-files/<filename>')
 def return_files(filename):
     file_path = UPLOAD_FOLDER + filename # Destination for downloads
     return send_file(file_path, as_attachment=True, attachment_filename='', cache_timeout=0)
-    
+
+# Download file redirects to return multiple files
+# @app.route('/return-multiple-files/')
+# def return_files():
+#     filenames = ['abstract.png', 'weed.png']
+#     # Lookup how to zip files and save to a directory
+#     file_path = UPLOAD_FOLDER + filename # Destination for downloads
+#     return send_file(file_path, as_attachment=True, attachment_filename='', cache_timeout=0)
+  
+  
 if __name__ == "__main___":
     app.run()
 
