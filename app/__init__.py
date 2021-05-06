@@ -11,4 +11,3 @@ else:
 
 from app import utils
 from app import views
-from app import model.srcnn

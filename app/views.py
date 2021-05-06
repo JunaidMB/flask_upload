@@ -39,7 +39,8 @@ def upload_file():
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
                 # Rotate the image
-                processed_file = process_image(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                #processed_file = process_image(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                processed_file = srcnn(filename = os.path.join(app.config['UPLOAD_FOLDER'], filename), model_weights= app.config["MODEL_WEIGHTS"])
                 
                 # Save the processed image
                 processed_file.seek(0)
