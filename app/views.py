@@ -1,3 +1,5 @@
+from app import app
+
 import os
 from werkzeug.utils import secure_filename
 from PIL import Image
@@ -6,12 +8,9 @@ import io
 from zipfile import ZipFile
 from os.path import basename
 from io import StringIO, BytesIO
-from utils import *
+from app.utils import *
+from app.model.srcnn import * 
 
-UPLOAD_FOLDER = 'uploads/'
-
-app = Flask(__name__, template_folder= 'templates')
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Define a POST method to upload the file
 @app.route('/uploadfile', methods = ['GET', 'POST'])
@@ -57,36 +56,16 @@ def upload_file():
             print('this is the ' + filename)
             return redirect('/downloadfile/' + filename)
     
-    return render_template('upload_file.html')
+    return render_template('upload_templates/upload_file.html')
 
 # API for downloading the file
 @app.route('/downloadfile/<filename>', methods = ['GET'])
 def download_file(filename):
-    return render_template('download.html', value = filename)
+    return render_template('download_templates/download.html', value = filename)
 
 # Download file redirects to return files
 @app.route('/return-files/<filename>')
 def return_files(filename):
-    file_path = UPLOAD_FOLDER + filename
+    file_path = app.config['UPLOAD_FOLDER'] + filename
+    #file_path = 'uploads/' + filename
     return send_file(file_path, as_attachment=True, attachment_filename='', cache_timeout=0)
-    
-if __name__ == "__main___":
-    app.run()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
