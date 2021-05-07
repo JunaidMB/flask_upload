@@ -1,10 +1,11 @@
+import os 
 class Config(object):
     DEBUG = False
     TESTING = False
 
-    UPLOAD_FOLDER = "/Users/junaid.buttibm.com/Developer/flask_upload/app/uploads/"
-    MODEL_FOLDER =  "/Users/junaid.buttibm.com/Developer/flask_upload/app/model/"
-    MODEL_WEIGHTS = "/Users/junaid.buttibm.com/Developer/flask_upload/app/model/3051crop_weight_200.h5"
+    UPLOAD_FOLDER = os.path.join(os.getcwd(), "app/uploads/")
+    MODEL_FOLDER =  os.path.join(os.getcwd(), "app/model/")
+    MODEL_WEIGHTS = os.path.join(os.getcwd(), "app/model/3051crop_weight_200.h5") 
 
     SESSION_COOKIE_SECURE = True
 
